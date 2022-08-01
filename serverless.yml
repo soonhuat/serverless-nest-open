@@ -4,10 +4,19 @@ plugins:
   - serverless-plugin-typescript
   - serverless-plugin-optimize
   - serverless-offline
+  - serverless-sentry
 
 provider:
   name: aws
   runtime: nodejs16.x
+  stage: dev
+  environment:
+    SENTRY_ENVIRONMENT: ${opt:stage, self:provider.stage}
+    SENTRY_FILTER_LOCAL: true
+    SENTRY_CAPTURE_ERRORS: true
+    SENTRY_CAPTURE_UNHANDLED: true
+    SENTRY_CAPTURE_MEMORY: true
+    SENTRY_CAPTURE_TIMEOUTS: true
 
 functions:
   main:
@@ -19,3 +28,7 @@ functions:
       - http:
           method: ANY
           path: '{proxy+}'
+
+custom:
+  sentry:
+    dsn: https://xxxx:yyyy@sentry.io/zzzz # URL provided by Sentry

@@ -18,7 +18,7 @@ async function bootstrap() {
 
     nestApp.enableCors();
     await nestApp.init();
-    // microservices handling end
+    // microservices handling end here
 
     // wrap nestJs app as lambda handler
     // this will handle both createServer and proxy with promise

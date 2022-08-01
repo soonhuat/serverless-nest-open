@@ -1,9 +1,8 @@
 {
   "name": "serverless-nest",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
-  "private": true,
+  "description": "Baby step learning serverless on nest framework",
+  "author": "Soon Huat, Phan",
   "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",

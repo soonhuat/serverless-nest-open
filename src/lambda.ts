@@ -14,10 +14,11 @@ async function bootstrap() {
     const sentryDSN =
       process.env.NODE_ENV !== 'dev' ? process.env.SENTRY_DSN : null;
 
-    Sentry.AWSLambda.init({
-      dsn: sentryDSN,
-      environment: process.env.NODE_ENV,
-    });
+    sentryDSN &&
+      Sentry.AWSLambda.init({
+        dsn: sentryDSN,
+        environment: process.env.NODE_ENV,
+      });
 
     const expressApp = express();
 
@@ -26,10 +27,10 @@ async function bootstrap() {
       new ExpressAdapter(expressApp),
     );
 
-    // middleware
+    // middleware, chain of responsibility pattern of different among all applied middleware
     nestApp.enableCors();
-    nestApp.use(Sentry.Handlers.requestHandler());
-    nestApp.use(Sentry.Handlers.errorHandler());
+    sentryDSN && nestApp.use(Sentry.Handlers.requestHandler());
+    sentryDSN && nestApp.use(Sentry.Handlers.errorHandler());
 
     await nestApp.init();
     // microservices handling end here
@@ -38,7 +39,7 @@ async function bootstrap() {
     // this will handle both createServer and proxy with promise
     cachedServer = serverlessExpress({
       app: expressApp,
-      respondWithErrors: process.env.NODE_ENV !== 'prod',
+      respondWithErrors: process.env.NODE_ENV === 'dev',
       log: {
         info(message, additional) {
           console.info(message, additional);
@@ -54,7 +55,7 @@ async function bootstrap() {
     });
   }
 
-  // wrap Sentry handler for inboundd request and outbound response to/from nestJs app
+  // wrap Sentry handler for inbound request and outbound response to/from nestJs app
   return Sentry.AWSLambda.wrapHandler(cachedServer);
 }
 

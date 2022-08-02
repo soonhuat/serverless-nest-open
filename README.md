@@ -5,6 +5,10 @@
 This is a quick learning repository for serverless-express with [NestJS](https://github.com/nestjs/nest) on AWS using the [Serverless framework](https://www.serverless.com/).
 Bootstrap from [Vendia](https://github.com/vendia/serverless-express)
 
+* serverless-sentry for event monitoring :tv:
+* serverless-plugin-warmup to keep application warm :fire:
+* middleware for chain of responsibility pattern
+
 ## Installation
 
 ```bash

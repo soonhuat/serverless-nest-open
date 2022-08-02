@@ -5,6 +5,7 @@ plugins:
   - serverless-plugin-optimize
   - serverless-offline
   - serverless-sentry
+  - serverless-plugin-warmup
 
 provider:
   name: aws
@@ -30,5 +31,11 @@ functions:
           path: '{proxy+}'
 
 custom:
+  warmup:
+    default:
+      enabled: true
+      events:
+        - schedule: rate(5 minutes)
+      concurrency: 10
   sentry:
-    dsn: https://xxxx:yyyy@sentry.io/zzzz # URL provided by Sentry
+    dsn: https://77110066cfeb430ea73fc446c914dcba@o1342385.ingest.sentry.io/6616457 # URL provided by Sentry
